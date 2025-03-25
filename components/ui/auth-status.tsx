@@ -23,7 +23,7 @@ export function AuthStatus() {
         <Link href="/login" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
           Login
         </Link>
-        <Button asChild size="sm">
+        <Button asChild size="sm" className="bg-green-800 hover:bg-green-600 text-white">
           <Link href="/register">Sign Up</Link>
         </Button>
       </div>
