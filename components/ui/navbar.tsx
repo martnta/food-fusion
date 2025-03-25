@@ -22,12 +22,12 @@ export function Navbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-gradient-to-r from-green-50/95 to-green-100/95 dark:from-green-900/60 dark:to-green-800/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-colors duration-300 ease-in-out scroll-smooth">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/placeholder.svg?height=32&width=32" alt="FoodFusion Logo" width={32} height={32} />
-            <span className="text-xl font-bold">FoodFusion</span>
+            <Image src="/recipe-logo.png" alt="TheRecipe Logo" width={32} height={32} />
+            <span className="text-xl font-bold text-green-800 dark:text-green-200">TheRecipe</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -37,7 +37,7 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-medium transition-colors hover:text-primary ${
-                  link.active ? "text-foreground" : "text-muted-foreground"
+                  link.active ? "text-green-900 dark:text-green-100" : "text-green-700 dark:text-green-300"
                 }`}
               >
                 {link.label}
@@ -57,10 +57,10 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <div className="flex flex-col gap-6 py-6">
+              <div className="flex flex-col p-4 gap-6 py-6">
                 <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
-                  <Image src="/placeholder.svg?height=32&width=32" alt="FoodFusion Logo" width={32} height={32} />
-                  <span className="text-xl font-bold">FoodFusion</span>
+                  <Image src="/recipe-logo.png" alt="TheRecipe Logo" width={32} height={32} />
+                  <span className="text-xl font-bold text-green-800 dark:text-green-200">TheRecipe</span>
                 </Link>
                 <nav className="flex flex-col gap-4">
                   {navLinks.map((link) => (
@@ -68,7 +68,7 @@ export function Navbar() {
                       key={link.href}
                       href={link.href}
                       className={`text-sm font-medium transition-colors hover:text-primary ${
-                        link.active ? "text-foreground" : "text-muted-foreground"
+                        link.active ? "text-green-900 dark:text-green-100" : "text-green-700 dark:text-green-300"
                       }`}
                       onClick={() => setIsOpen(false)}
                     >
@@ -84,4 +84,3 @@ export function Navbar() {
     </header>
   )
 }
-

@@ -6,84 +6,57 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { toast } from "sonner"
+import { useAuth } from "@/lib/auth-context"
+import { apiClient } from "@/lib/api-client"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [failedAttempts, setFailedAttempts] = useState(0)
-  const [isLocked, setIsLocked] = useState(false)
-  const [lockoutTime, setLockoutTime] = useState<Date | null>(null)
   const router = useRouter()
-  
+  const { login } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (isLocked) {
-      const now = new Date()
-      if (lockoutTime && now < lockoutTime) {
-        const remainingSeconds = Math.ceil((lockoutTime.getTime() - now.getTime()) / 1000)
-        toast(`Too many failed attempts. Try again in ${remainingSeconds} seconds.`)
-        return
-      } else {
-        // Reset lockout if time has passed
-        setIsLocked(false)
-        setFailedAttempts(0)
-      }
-    }
-
     if (!email || !password) {
-      toast("Email and password are required")
+      toast.error("Email and password are required")
       return
     }
 
     setLoading(true)
 
     try {
-      // In a real app, this would be an API call to authenticate the user
-      // For now, we'll simulate a login with a dummy credential check
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const response = await apiClient.auth.login(email, password)
 
-      // Dummy credential check (in a real app, this would be server-side)
-      if (email === "user@example.com" && password === "password123") {
-        toast("You have successfully logged in!")
-
-        // Redirect to dashboard
-        router.push("/")
-      } else {
-        // Increment failed attempts
-        const newFailedAttempts = failedAttempts + 1
-        setFailedAttempts(newFailedAttempts)
-
-        // Check if account should be locked
-        if (newFailedAttempts >= 3) {
-          setIsLocked(true)
-          const lockoutEndTime = new Date()
-          lockoutEndTime.setMinutes(lockoutEndTime.getMinutes() + 3) // Lock for 3 minutes
-          setLockoutTime(lockoutEndTime)
-
-          toast("Too many failed attempts. Your account is locked for 3 minutes.")
-        } else {
-          toast(`Invalid credentials. ${3 - newFailedAttempts} attempts remaining.`)
-        }
+      if (response.error) {
+        toast.error(response.message || response.error)
+        return
       }
+
+      // Store auth data
+      login(response.token, response.user)
+
+      toast.success("You have successfully logged in!")
+
+      // Redirect to dashboard
+      router.push("/")
     } catch (e) {
       const error = e as Error
-      toast(error.message || "Something went wrong. Please try again.")
+      toast.error(error.message || "Something went wrong. Please try again.")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
+    <div className="container py-12 flex items-center justify-center">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
@@ -134,7 +107,7 @@ export default function LoginPage() {
                   </Button>
                 </div>
               </div>
-              <Button type="submit" className="w-full" disabled={loading || isLocked}>
+              <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Signing in..." : "Sign in"}
               </Button>
             </div>

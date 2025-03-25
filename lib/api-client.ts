@@ -151,6 +151,14 @@ export const apiClient = {
       const response = await fetch(`${API_BASE_URL}/categories`)
       return await response.json()
     },
+
+    create: async (categoryData: any) => {
+      const response = await fetchWithAuth("/categories", {
+        method: "POST",
+        body: JSON.stringify(categoryData),
+      })
+      return await response.json()
+    },
   },
 
   // Comments endpoints
