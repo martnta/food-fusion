@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String         @id @default(cuid())
+  firstName         String
+  lastName          String
+  email             String         @unique
+  password          String
+  failedLoginAttempts Int          @default(0)
+  lockedUntil       DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  recipes           Recipe[]
+  comments          Comment[]
+  favorites         Favorite[]
+  sharedRecipes     SharedRecipe[] @relation("SharedBy")
+}
+
+model Recipe {
+  id               String         @id @default(cuid())
+  title            String
+  description      String
+  ingredients      String         @db.Text
+  instructions     String         @db.Text
+  cookingTime      Int
+  servings         Int
+  difficulty       String
+  imageUrl         String?
+  authorId         String
+  author           User           @relation(fields: [authorId], references: [id])
+  categoryId       String
+  category         Category       @relation(fields: [categoryId], references: [id])
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  comments         Comment[]
+  favorites        Favorite[]
+  sharedRecipes    SharedRecipe[]
+}
+
+model Category {
+  id               String    @id @default(cuid())
+  name             String    @unique
+  description      String?
+  recipes          Recipe[]
+}
+
+model Comment {
+  id               String    @id @default(cuid())
+  content          String    @db.Text
+  rating           Int?
+  userId           String
+  user             User      @relation(fields: [userId], references: [id])
+  recipeId         String
+  recipe           Recipe    @relation(fields: [recipeId], references: [id])
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Favorite {
+  id               String    @id @default(cuid())
+  userId           String
+  user             User      @relation(fields: [userId], references: [id])
+  recipeId         String
+  recipe           Recipe    @relation(fields: [recipeId], references: [id])
+  createdAt        DateTime  @default(now())
+
+  @@unique([userId, recipeId])
+}
+
+model SharedRecipe {
+  id               String    @id @default(cuid())
+  shareToken       String    @unique
+  recipeId         String
+  recipe           Recipe    @relation(fields: [recipeId], references: [id])
+  sharedById       String
+  sharedBy         User      @relation("SharedBy", fields: [sharedById], references: [id])
+  shareMethod      String    @default("link")
+  recipientEmail   String?
+  viewCount        Int       @default(0)
+  expiresAt        DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+

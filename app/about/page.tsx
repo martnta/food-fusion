@@ -7,7 +7,6 @@ import { SignUpModal } from "@/components/ui/sign-up-modal"
 import { CookieConsent } from "@/components/ui/cookie-consent"
 import { FeaturedRecipeCard } from "@/components/ui/featured-recipe"
 import { EventCard } from "@/components/ui/event-card"
-import { AuthStatus } from "@/components/ui/auth-status"
 
 export default function HomePage() {
   return (
@@ -61,7 +60,17 @@ export default function HomePage() {
               </Link>
             </nav>
           </div>
-          <AuthStatus />
+          <div className="flex items-center gap-2">
+            <Link
+              href="/login"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              Login
+            </Link>
+            <Button asChild size="sm">
+              <Link href="/register">Sign Up</Link>
+            </Button>
+          </div>
         </div>
       </header>
       <main className="flex-1">
