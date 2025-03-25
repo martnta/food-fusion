@@ -14,9 +14,9 @@ export default function HomePage() {
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
             <div className="space-y-4">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Discover the Joy of Cooking with FoodFusion
+                Discover the Joy of Cooking with TheRecipe
               </h1>
-              <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="max-w-[600px] text-green-600 dark:text-green-300 text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Join our vibrant community of food enthusiasts. Share recipes, learn new techniques, and explore
                 culinary creativity.
               </p>

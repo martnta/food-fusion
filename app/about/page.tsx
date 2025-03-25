@@ -5,7 +5,7 @@ export default function AboutPage() {
     <div className="container py-12 md:py-16 lg:py-24">
       <div className="mx-auto max-w-4xl space-y-12">
         <div className="space-y-4 text-center">
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl">About FoodFusion</h1>
+          <h1 className="text-4xl font-bold text-green-800 dark:text-green-200 tracking-tighter sm:text-5xl">About TheRecipe</h1>
           <p className="text-muted-foreground md:text-xl/relaxed">
             Our mission is to promote home cooking and culinary creativity among food enthusiasts.
           </p>
@@ -15,7 +15,7 @@ export default function AboutPage() {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Our Story</h2>
             <p className="text-muted-foreground">
-              FoodFusion was founded in 2023 by a group of passionate home cooks who wanted to create a platform where
+              TheRecipe was founded in 2023 by a group of passionate home cooks who wanted to create a platform where
               food enthusiasts could share recipes, learn new techniques, and connect with like-minded individuals.
             </p>
             <p className="text-muted-foreground">
@@ -25,8 +25,8 @@ export default function AboutPage() {
           </div>
           <div className="relative aspect-video overflow-hidden rounded-lg">
             <Image
-              src="/placeholder.svg?height=400&width=600"
-              alt="FoodFusion team cooking together"
+              src="/about.jpg"
+              alt="TheRecipe team cooking together"
               fill
               className="object-cover"
             />

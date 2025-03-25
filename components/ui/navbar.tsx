@@ -3,10 +3,10 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
-import { Menu } from "lucide-react"
 import { AuthStatus } from "@/components/ui/auth-status"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet"
+import { MdRestaurantMenu } from "react-icons/md";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -53,10 +53,13 @@ export function Navbar() {
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon" aria-label="Menu">
-                <Menu className="h-5 w-5" />
+                <MdRestaurantMenu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <SheetHeader>
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              </SheetHeader>
               <div className="flex flex-col p-4 gap-6 py-6">
                 <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
                   <Image src="/recipe-logo.png" alt="TheRecipe Logo" width={32} height={32} />

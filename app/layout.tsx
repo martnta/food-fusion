@@ -33,11 +33,11 @@ export default function RootLayout({
                 <div className="container flex flex-col items-center justify-between p-6 gap-4 md:flex-row">
                   <div className="flex flex-col items-center gap-4 md:items-start">
                     <Link href="/" className="flex items-center gap-2">
-                      <Image src="/placeholder.svg?height=32&width=32" alt="FoodFusion Logo" width={32} height={32} />
-                      <span className="text-xl font-bold text-green-800 dark:text-green-200">FoodFusion</span>
+                      <Image src="/recipe-logo.png" alt="TheRecipe Logo" width={32} height={32} />
+                      <span className="text-xl font-bold text-green-800 dark:text-green-200">TheRecipe</span>
                     </Link>
                     <p className="text-sm text-green-600 dark:text-green-300">
-                      &copy; {new Date().getFullYear()} FoodFusion. All rights reserved.
+                      &copy; {new Date().getFullYear()} TheRecipe. All rights reserved.
                     </p>
                   </div>
                   <div className="flex gap-4">

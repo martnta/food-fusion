@@ -4,9 +4,11 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, ChefHat } from "lucide-react"
 import { toast } from "sonner"
+import { FaGoogle, FaFacebook } from "react-icons/fa"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,6 +26,7 @@ export default function RegisterPage() {
   })
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [activeSection, setActiveSection] = useState<'register' | 'social'>('register')
   const router = useRouter()
   const { login } = useAuth()
 
@@ -69,7 +72,10 @@ export default function RegisterPage() {
       // Store auth data
       login(response.token, response.user)
 
-      toast.success("Your account has been created successfully!")
+      toast.success("Your account has been created successfully!", {
+        description: "Welcome to TheRecipe! Get ready to explore delicious recipes.",
+        icon: <ChefHat className="text-green-600" />
+      })
 
       // Redirect to home page
       router.push("/")
@@ -83,100 +89,169 @@ export default function RegisterPage() {
 
   return (
     <div className="container py-12 flex items-center justify-center">
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-        <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
-          <p className="text-sm text-muted-foreground">Enter your details below to create your account</p>
+      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[450px] bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/50 dark:to-green-800/50 opacity-20 -z-10 animate-pulse"></div>
+
+        {/* Register Header */}
+        <div className="flex flex-col space-y-2 text-center p-6 bg-green-50 dark:bg-green-900/30">
+          <Image 
+            src="/recipe-logo.png" 
+            alt="TheRecipe Logo" 
+            width={64} 
+            height={64} 
+            className="mx-auto mb-4 animate-bounce"
+          />
+          <h1 className="text-3xl font-bold tracking-tight text-green-800 dark:text-green-200">
+            {activeSection === 'register' ? 'Create Your Account' : 'Join with Social'}
+          </h1>
+          <p className="text-sm text-green-600 dark:text-green-300">
+            {activeSection === 'register' 
+              ? "Enter your details to start your culinary journey" 
+              : "Connect with your favorite social platform"}
+          </p>
         </div>
-        <div className="grid gap-6">
-          <form onSubmit={handleSubmit}>
-            <div className="grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
+
+        {/* Registration Form */}
+        <div className="grid gap-6 p-6">
+          {activeSection === 'register' ? (
+            <form onSubmit={handleSubmit}>
+              <div className="grid gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="firstName" className="text-green-700 dark:text-green-300">First Name</Label>
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      placeholder="John"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                      className="border-green-300 focus:ring-green-500"
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="lastName" className="text-green-700 dark:text-green-300">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      name="lastName"
+                      placeholder="Doe"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                      className="border-green-300 focus:ring-green-500"
+                    />
+                  </div>
+                </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="firstName">First name</Label>
+                  <Label htmlFor="email" className="text-green-700 dark:text-green-300">Email</Label>
                   <Input
-                    id="firstName"
-                    name="firstName"
-                    placeholder="John"
-                    value={formData.firstName}
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="name@example.com"
+                    value={formData.email}
                     onChange={handleChange}
                     required
+                    className="border-green-300 focus:ring-green-500"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="lastName">Last name</Label>
-                  <Input
-                    id="lastName"
-                    name="lastName"
-                    placeholder="Doe"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                  />
+                  <Label htmlFor="password" className="text-green-700 dark:text-green-300">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      className="border-green-300 focus:ring-green-500"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 text-green-600 hover:text-green-800"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
+                <div className="grid gap-2">
+                  <Label htmlFor="confirmPassword" className="text-green-700 dark:text-green-300">Confirm Password</Label>
                   <Input
-                    id="password"
-                    name="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    value={formData.password}
+                    value={formData.confirmPassword}
                     onChange={handleChange}
                     required
+                    className="border-green-300 focus:ring-green-500"
                   />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
-                  </Button>
                 </div>
+                <Button 
+                  type="submit" 
+                  className="w-full bg-green-600 hover:bg-green-700 text-white" 
+                  disabled={loading}
+                >
+                  {loading ? "Creating account..." : "Create account"}
+                </Button>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Creating account..." : "Create account"}
+            </form>
+          ) : (
+            <div className="grid gap-4">
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center justify-center gap-2 text-green-700 border-green-300 hover:bg-green-50"
+                onClick={() => toast.info("Google signup coming soon!")}
+              >
+                <FaGoogle className="h-5 w-5" /> Continue with Google
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center justify-center gap-2 text-green-700 border-green-300 hover:bg-green-50"
+                onClick={() => toast.info("Facebook signup coming soon!")}
+              >
+                <FaFacebook className="h-5 w-5" /> Continue with Facebook
               </Button>
             </div>
-          </form>
-          <div className="text-center text-sm">
-            Already have an account?{" "}
-            <Link href="/login" className="underline underline-offset-4 hover:text-primary">
-              Sign in
-            </Link>
+          )}
+
+          {/* Section Toggle */}
+          <div className="text-center text-sm mt-4">
+            {activeSection === 'register' ? (
+              <>
+                Already have an account?{" "}
+                <Link 
+                  href="/login" 
+                  className="text-green-600 underline underline-offset-4 hover:text-green-800"
+                >
+                  Sign in
+                </Link>
+                {" | "}
+                <button 
+                  onClick={() => setActiveSection('social')}
+                  className="text-green-600 underline underline-offset-4 hover:text-green-800"
+                >
+                  Social Signup
+                </button>
+              </>
+            ) : (
+              <button 
+                onClick={() => setActiveSection('register')}
+                className="text-green-600 underline underline-offset-4 hover:text-green-800"
+              >
+                Back to Email Registration
+              </button>
+            )}
           </div>
         </div>
       </div>
     </div>
   )
 }
-

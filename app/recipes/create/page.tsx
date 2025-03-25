@@ -46,6 +46,7 @@ export default function CreateRecipePage() {
   const [isCreatingCategory, setIsCreatingCategory] = useState(false)
 
   const router = useRouter()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { user, isAuthenticated } = useAuth()
 
   // Redirect if not authenticated
