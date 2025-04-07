@@ -22,7 +22,7 @@ export function Navbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-gradient-to-r from-green-50/95 to-green-100/95 dark:from-green-900/60 dark:to-green-800/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-colors duration-300 ease-in-out scroll-smooth">
+    <header className="sticky top-0 z-50 w-full border-b bg-gradient-to-r from-green-50/95 to-green-100/95 dark:from-green-900/60 dark:to-green-800/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-colors duration-300 ease-in-out p-2 scroll-smooth">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2">
